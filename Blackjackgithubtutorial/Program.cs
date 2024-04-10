@@ -1,20 +1,23 @@
-﻿
-namespace Blackjackgithubtutorial
+﻿using Blackjackgithubtutorial;
+using System;
+
+class Program
 {
-
-    public class Program
+    static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            // Print a request for message.
-            Console.WriteLine("Give a message: ");
+        Console.WriteLine("Welcome to Casino Royale!");
+        Console.WriteLine("Je bevindt je nu in een veilige test omgeving.");
+        Console.WriteLine("Hoeveel spelers wil je tegen spelen?");
 
-            // Assign a new string variable. The value is the command we want to use.
-            string message = "\n" + Console.ReadLine();
+        Deck deck = new Deck();
 
-            // Print out the message we gave.
-            Console.WriteLine("This is it: " + "\n" + message);
-        }
+        Console.WriteLine("Het originele deck bevat de volgende kaarten:");
+        deck.PrintDeck();
+
+        Console.WriteLine("\nHet deck wordt geshuffled...");
+        deck.ShuffleDeck();
+
+        Console.WriteLine("\nHet gesufflede deck bevat de volgende kaarten:");
+        deck.PrintDeck();
     }
-
 }
