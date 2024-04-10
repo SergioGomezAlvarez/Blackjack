@@ -5,10 +5,14 @@
     public class Deck
     {
         private List<Card> cards;
+        private Random random;
+
 
         public Deck()
         {
             cards = new List<Card>();
+            random = new Random();
+
             InitializeDeck();
         }
 
@@ -28,6 +32,18 @@
             }
         }
 
+        public void ShuffleDeck()
+        {
+            int n = cards.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                Card value = cards[k];
+                cards[k] = cards[n];
+                cards[n] = value;
+            }
+        }
         public void PrintDeck()
         {
             foreach (Card card in cards)
