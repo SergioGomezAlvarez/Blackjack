@@ -51,5 +51,13 @@
                 Console.WriteLine("Value: " + card.GetValue() + ", Suit: " + card.GetSuit());
             }
         }
+
+        public Card DrawCard()
+        {
+            Card card = cards[0];
+            cards.RemoveAt(0);
+            return card;
+        }
+
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Blackjackgithubtutorial;
 using System;
 using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Threading;
 
 class Program
 {
@@ -21,12 +23,129 @@ class Program
             Console.WriteLine(player.Name);
         }
 
-        Deck deck = new Deck();
+        Game game = new Game(numberOfPlayers, players);
+        game.DealCardsToPlayers();
 
-        Console.WriteLine("\nHet deck wordt geshuffled...");
-        deck.ShuffleDeck();
+        Dealer dealer = new Dealer();
+        Deck deck = game.GetDeck();
 
-        Console.WriteLine("\nHet deck is geshuffled");
+        bool dealToSelf = game.WantToDealCardsToSelf();
+
+        if (dealToSelf)
+        {
+            dealer.DealCardsToSelf(deck);
+            dealer.ShowCards();
+        }
+
+        bool allPlayersDone = false;
+
+        while (!allPlayersDone)
+        {
+            allPlayersDone = true;
+
+            foreach (var player in players)
+            {
+                if (!player.IsDone())
+                {
+                    Console.WriteLine(player.IsDone());
+                    Console.WriteLine($"\n{player.Name}, het is jouw beurt.");
+                    Thread.Sleep(2000);
+
+                    bool hit = player.MakeRandomDecision();
+                    
+
+                    while (hit)
+                    {
+                        Card card = deck.DrawCard();
+                        player.Hands[0].Cards.Add(card);
+                        player.ShowCards();
+
+                        int totalPoints = player.CalculateTotalPoints();
+                        if (totalPoints > 21)
+                        {
+                            Console.WriteLine("Bust! Einde van de ronde voor deze speler.");
+                            player.SetDone();
+                            break;
+                        }
+                        else if (totalPoints == 21)
+                        {
+                            Console.WriteLine("21 behaald! Einde van de ronde voor deze speler.");
+                            player.SetDone();
+                            break;
+                        }
+                        hit = player.MakeRandomDecision();
+                    }
+
+                    
+
+                    if (!player.IsDone())
+                    {
+                        allPlayersDone = false;
+                        break;
+                    }
+                }
+            }
+
+            if (allPlayersDone)
+            {
+                Console.WriteLine("\nDealer's turn:");
+
+                dealer.Hands[0].Cards[0].IsFaceUp = true;
+                dealer.ShowCards();
+
+                int dealerTotalPoints = dealer.CalculateTotalPoints();
+
+               
+                string decision = "";
+
+                while (decision.ToLower() != "stand")
+                {
+                    Console.Write("Wil de dealer hitten (hit) of standen (stand)? ");
+                    decision = Console.ReadLine();
+
+                    while (decision.ToLower() != "stand" && decision.ToLower() != "hit")
+                    {
+                        Console.WriteLine("Ongeldige keuze. Kies 'hit' om te hitten of 'stand' om te standen.");
+                        Console.Write("Wil de dealer hitten (hit) of standen (stand)? ");
+                        decision = Console.ReadLine();
+                    }
+
+                    if (decision.ToLower() == "hit")
+                    {
+                        if (dealer.CalculateTotalPoints() <= 16)
+                        {
+                            Card card = deck.DrawCard();
+                            dealer.Hands[0].Cards.Add(card);
+                            dealer.ShowCards();
+                        }
+                        else
+                        {
+                            Console.WriteLine("Niet de goede keuze");
+                        }
+                    }
+
+                    if (decision.ToLower() == "stand")
+                    {
+                        if (dealer.CalculateTotalPoints() >= 17)
+                        {
+                            Console.WriteLine("Je hebt gepassed");
+                            break;
+                        }
+                    }
+
+                    if (decision.ToLower() == "stand")
+                    {
+                        if (dealer.CalculateTotalPoints() == 21)
+                        {
+                            Console.WriteLine("Je hebt 21 punten! het spel is voorbij!");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+       
     }
 
     static int GetNumberOfPlayers()
@@ -41,7 +160,7 @@ class Program
             }
             else
             {
-                Console.WriteLine("Ongeldige invoer. Voer een getal tussen 1 en 4 in.");
+                Console.WriteLine("Niet mogelijk. Probeer het opnieuw.");
             }
         }
         return numberOfPlayers;
