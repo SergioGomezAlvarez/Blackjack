@@ -15,7 +15,7 @@
         {
             this.value = value;
             this.suit = suit;
-            this.isFaceUp = true; 
+            this.isFaceUp = true;
 
         }
 

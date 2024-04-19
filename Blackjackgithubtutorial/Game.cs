@@ -1,11 +1,13 @@
 ﻿using Blackjackgithubtutorial;
 using System;
 using System.Collections.Generic;
+using static System.Formats.Asn1.AsnWriter;
 
 public class Game
 {
     private Deck deck;
     private List<Player> players;
+    int score = 10;
 
     public Game(int numberOfPlayers, List<Player> initialPlayers)
     {
@@ -27,6 +29,9 @@ public class Game
             Console.Write("Hoeveel kaarten wil je uitdelen aan elke speler?: ");
             if (!int.TryParse(Console.ReadLine(), out numberOfCardsPerPlayer) || numberOfCardsPerPlayer != 2)
             {
+
+                score--;
+                Console.WriteLine("POINT DEDUCTION. Je score is nu: " + score);
                 Console.WriteLine("Je hebt niet het juiste aantal kaarten uitgedeeld. Probeer het opnieuw.");
             }
         }

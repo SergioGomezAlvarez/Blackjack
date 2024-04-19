@@ -8,6 +8,8 @@ class Program
 {
     static void Main(string[] args)
     {
+        int score = 10;
+
         Console.WriteLine("Welcome to Casino Royale!");
         Console.WriteLine("Je bevindt je nu in een veilige test omgeving.");
 
@@ -47,18 +49,17 @@ class Program
             {
                 if (!player.IsDone())
                 {
-                    Console.WriteLine(player.IsDone());
                     Console.WriteLine($"\n{player.Name}, het is jouw beurt.");
                     Thread.Sleep(2000);
 
                     bool hit = player.MakeRandomDecision();
-                    
+
 
                     while (hit)
                     {
                         Card card = deck.DrawCard();
                         player.Hands[0].Cards.Add(card);
-                        player.ShowCards();
+                        player.ShowCards(); 
 
                         int totalPoints = player.CalculateTotalPoints();
                         if (totalPoints > 21)
@@ -75,10 +76,15 @@ class Program
                         }
                         hit = player.MakeRandomDecision();
                     }
-
                     
 
-                    if (!player.IsDone())
+                    if (!hit)
+                    {
+                        Console.WriteLine("Heeft gestand.");
+                    }
+
+
+                        if (!player.IsDone())
                     {
                         allPlayersDone = false;
                         break;
@@ -95,7 +101,7 @@ class Program
 
                 int dealerTotalPoints = dealer.CalculateTotalPoints();
 
-               
+
                 string decision = "";
 
                 while (decision.ToLower() != "stand")
@@ -121,6 +127,8 @@ class Program
                         else
                         {
                             Console.WriteLine("Niet de goede keuze");
+                            score--;
+                            Console.WriteLine("POINT DEDUCTION. Je score is nu: " + score);
                         }
                     }
 
@@ -128,8 +136,14 @@ class Program
                     {
                         if (dealer.CalculateTotalPoints() >= 17)
                         {
-                            Console.WriteLine("Je hebt gepassed");
+                            Console.WriteLine("Je hebt voor stand gekozen");
                             break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Niet de goede keuze");
+                            score--;
+                            Console.WriteLine("POINT DEDUCTION. Je score is nu: " + score);
                         }
                     }
 
@@ -152,7 +166,7 @@ class Program
             }
         }
 
-       
+
     }
 
     static int GetNumberOfPlayers()

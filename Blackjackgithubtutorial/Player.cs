@@ -11,7 +11,7 @@ namespace Blackjackgithubtutorial
 
         public string Name { get; private set; }
         public List<Hand> Hands { get; private set; }
-        private bool isDone; 
+        private bool isDone;
 
 
         public Player()
@@ -21,7 +21,18 @@ namespace Blackjackgithubtutorial
             Hands.Add(new Hand());
         }
 
-
+        public void ShowCards()
+        {
+            Console.WriteLine($"Kaarten van speler {Name}:");
+            foreach (var card in Hands[0].Cards)
+            {
+                if (card.IsFaceUp)
+                {
+                    Console.WriteLine($"   {card.GetValue()} van {card.GetSuit()}");
+                }
+                
+            }
+        }
         private string GenerateRandomName()
         {
             if (availableNames.Count == 0)
@@ -40,22 +51,7 @@ namespace Blackjackgithubtutorial
             availableNames = new List<string> { "Niek", "Melvin", "Robert", "Erik", "Bart", "Patrick de Rozario", "Marco" };
         }
 
-        public void ShowCards()
-        {
-            Console.WriteLine($"Kaarten van speler {Name}:");
-            foreach (var card in Hands[0].Cards)
-            {
-                if (card.IsFaceUp)
-                {
-                    Console.WriteLine($"   {card.GetValue()} van {card.GetSuit()}");
-                }
-                else
-                {
-                    string value = card.GetValue();
-                    Console.WriteLine($"Gesloten kaart");
-                }
-            }
-        }
+        
         public Player(string name)
         {
             Name = name;
@@ -84,18 +80,18 @@ namespace Blackjackgithubtutorial
         public bool MakeRandomDecision()
         {
             Random random = new Random();
-            bool hit = random.Next(2) == 0; 
+            bool hit = random.Next(2) == 0;
 
             if (!hit)
             {
-                isDone = true; 
+                isDone = true;
             }
 
-            return hit; 
+            return hit;
         }
 
 
-        
+
         public int CalculateTotalPoints()
         {
             int totalPoints = 0;
@@ -127,10 +123,10 @@ namespace Blackjackgithubtutorial
                 case "King":
                     return 10;
                 case "Ace":
-                    
+
                     return 11;
                 default:
-                    return 0; 
+                    return 0;
             }
         }
 

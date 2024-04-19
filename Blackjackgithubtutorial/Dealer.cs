@@ -9,6 +9,22 @@ namespace Blackjackgithubtutorial
         {
         }
 
+        public void ShowCards()
+        {
+            Console.WriteLine($"Kaarten van speler {Name}:");
+            foreach (var card in Hands[0].Cards)
+            {
+                if (card.IsFaceUp)
+                {
+                    Console.WriteLine($"   {card.GetValue()} van {card.GetSuit()}");
+                }
+                else
+                {
+                    string value = card.GetValue();
+                    Console.WriteLine($"Gesloten kaart");
+                }
+            }
+        }
         public void DealCardsToSelf(Deck deck)
         {
             int numberOfCardsToDeal = 2;
