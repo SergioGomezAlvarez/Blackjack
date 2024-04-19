@@ -141,6 +141,13 @@ class Program
                             return;
                         }
                     }
+
+                    if (dealer.CalculateTotalPoints() >= 21)
+                    {
+                        Console.WriteLine("Het spel is voorbij!");
+                        return;
+                    }
+
                 }
             }
         }
